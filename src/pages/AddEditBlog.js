@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useMemo} from "react";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import { db, storage } from "../firebase";
@@ -14,6 +14,13 @@ import {
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.core.css'
+import ReactQuill,{Quill} from 'react-quill'
+import katex from 'katex';
+
+
+window.katex = katex;
 const initialState = {
   title: "",
   tags: [],
@@ -37,7 +44,8 @@ const AddEditBlog = ({ user, setActive }) => {
   const [form, setForm] = useState(initialState);
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(null);
-
+  const [value, setValue] = useState('');
+  const [text, setText] = useState('');
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -99,6 +107,10 @@ const AddEditBlog = ({ user, setActive }) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleText = (e) => {
+    setText(e);
+  };
+
   const handleTags = (tags) => {
     setForm({ ...form, tags });
   };
@@ -113,11 +125,12 @@ const AddEditBlog = ({ user, setActive }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (category && tags && title && description && trending) {
+    if (category && tags && title && text && trending) {
       if (!id) {
         try {
           await addDoc(collection(db, "blogs"), {
             ...form,
+            blogcontent: text,
             timestamp: serverTimestamp(),
             author: user.displayName,
             userId: user.uid,
@@ -130,6 +143,7 @@ const AddEditBlog = ({ user, setActive }) => {
         try {
           await updateDoc(doc(db, "blogs", id), {
             ...form,
+            blogcontent: text,
             timestamp: serverTimestamp(),
             author: user.displayName,
             userId: user.uid,
@@ -145,7 +159,51 @@ const AddEditBlog = ({ user, setActive }) => {
 
     navigate("/");
   };
+  const formats = [
+    'header',
+    'font',
+    'size',
+    'color',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+    'align',
+    'direction',
+    'link',
+    'formula',
+    'code-block',
+  ];
+  var Font = Quill.import('formats/font');
+  Font.whitelist = ['Ubuntu', 'Raleway', 'Roboto'];
+  Quill.register(Font, true);
 
+  const toolbarOptions = [
+    [{ header: [3,2] }, { 'font': Font.whitelist},{ size: ["small", false, "large", "huge"] },{ color: [] }],
+    ["bold", "italic", "underline", "strike", "blockquote", "code-block"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+      { align: [] }
+    ],
+    
+    ["formula"],
+    ["clean"],
+
+  ];
+
+  const modules = useMemo(() => ({
+    toolbar: {
+      container:toolbarOptions,
+    },
+    formula : true,
+  }), [])
   return (
     <div className="container-fluid mb-4">
       <div className="container">
@@ -216,16 +274,22 @@ const AddEditBlog = ({ user, setActive }) => {
                 </select>
               </div>
               <div className="col-12 py-3">
-                <textarea
+                {/* <textarea
                   className="form-control description-box"
                   placeholder="Description"
                   value={description}
                   name="description"
                   onChange={handleChange}
-                />
+                /> */}
+                <ReactQuill theme="snow" modules={modules}  name="text" formats = {formats} value={text} onChange={handleText} style={{height:"100%"}} />; 
+              
+                <br/>
+<br/>
               </div>
+             
               <div className="mb-3">
-                <input
+              <br/>
+<br/><input
                   type="file"
                   className="form-control"
                   onChange={(e) => setFile(e.target.files[0])}

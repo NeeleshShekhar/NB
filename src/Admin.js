@@ -19,9 +19,8 @@ import TagBlog from "./pages/TagBlog";
 import CategoryBlog from "./pages/CategoryBlog";
 import ScrollToTop from "./components/ScrollToTop";
 import Blogs from "./pages/Blogs";
-import Admin from "./Admin";
 
-function App() {
+function Admin() {
   const [active, setActive] = useState("home");
   const [user, setUser] = useState(null);
 
@@ -47,7 +46,14 @@ function App() {
 
   return (
     <div className="App">
-      <Headerexpose />
+      
+      
+      <Header
+        setActive={setActive}
+        active={active}
+        user={user}
+        handleLogout={handleLogout}
+      />
       <ScrollToTop />
       
       <ToastContainer position="top-center" />
@@ -56,16 +62,8 @@ function App() {
           path="/"
           element={<Home setActive={setActive} active={active} user={user} />}
         />
+        
         <Route
-          path="/admin"
-          element={<Admin />}
-        />
-        <Route
-          path="/search"
-          element={<Home setActive={setActive} user={user} />}
-        />
-
-         <Route
           path="/search"
           element={<Home setActive={setActive} user={user} />}
         />
@@ -103,4 +101,4 @@ function App() {
   );
 }
 
-export default App;
+export default Admin;

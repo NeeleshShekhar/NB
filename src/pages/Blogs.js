@@ -12,6 +12,7 @@ import {
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import BlogCards from "../components/blogcards";
 import BlogSection from "../components/BlogSection";
 import Pagination from "../components/Pagination";
 import Spinner from "../components/Spinner";
@@ -38,6 +39,7 @@ const Blogs = ({setActive}) => {
   const getBlogsData = async () => {
     setLoading(true);
     const blogRef = collection(db, "blogs");
+    
     const first = query(blogRef, orderBy("title"), limit(4));
     const docSnapshot = await getDocs(first);
     setBlogs(docSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
@@ -107,8 +109,8 @@ const Blogs = ({setActive}) => {
         <div className="row">
           <div className="blog-heading text-center py-2 mb-4">Daily Blogs</div>
           {blogs?.map((blog) => (
-            <div className="col-md-6" key={blog.id}>
-              <BlogSection {...blog} />
+            <div className="col-md-3" key={blog.id}>
+              <BlogCards {...blog} />
             </div>
           ))}
         </div>

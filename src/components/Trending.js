@@ -3,7 +3,7 @@ import OwlCarousel from "react-owl-carousel";
 import { Link } from "react-router-dom";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
-
+import { excerpt } from "../utility";
 const Trending = ({ blogs }) => {
   const options = {
     loop: true,
@@ -27,7 +27,9 @@ const Trending = ({ blogs }) => {
   return (
     <>
       <div>
-        <div className="blog-heading text-start py-2 mb-4">Trending</div>
+      <br/>
+        <div className="blog-heading text-start py-2 mb-4"><strong><h1 style={{fontFamily:"sans-serif",alignContent:"center"}}>Trending ✈️</h1></strong></div>
+     <br/>
       </div>
       <OwlCarousel className="owl-theme" {...options}>
         {blogs?.map((item) => (
@@ -43,9 +45,12 @@ const Trending = ({ blogs }) => {
                 </div>
                 <div className="trending-img-absolute"></div>
                 <div className="trending-img-absolute-1">
-                  <span className="text-white">{item.title}</span>
+                  <span className="text-white"><strong style={{color:"white"}}>{item.title}</strong></span>
                   <div className="trending-meta-info">
                     {item.author} - {item.timestamp.toDate().toDateString()}
+                  </div>
+                  <div className="trending-meta-info" dangerouslySetInnerHTML={{__html : excerpt(item.blogcontent, 120)}}>
+                    
                   </div>
                 </div>
               </div>

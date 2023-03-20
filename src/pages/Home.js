@@ -22,6 +22,7 @@ import Search from "../components/Search";
 import { isEmpty, isNull } from "lodash";
 import { useLocation } from "react-router-dom";
 import Category from "../components/Category";
+import Carouselshow from "../components/carousel";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -204,14 +205,18 @@ const Home = ({ setActive, user, active }) => {
   console.log("categoryCount", categoryCount);
 
   return (
-    <div className="container-fluid pb-4 pt-4 padding">
+    
+    <div className="">
+
+      <Carouselshow/>
       <div className="container padding">
         <div className="row mx-0">
+          
           <Trending blogs={trendBlogs} />
-          <div className="col-md-8">
-            <div className="blog-heading text-start py-2 mb-4">Daily Blogs</div>
+          <div className="col-md-8 sideblock" style={{marginTop:"2%"}}>
+            <div className="blog-heading text-start py-2 mb-4"><strong><h1 style={{fontFamily:"sans-serif"}}>New Additions</h1></strong></div>
             {blogs.length === 0 && location.pathname !== "/" && (
-              <>
+              <> <br/>
                 <h4>
                   No Blog found with search keyword:{" "}
                   <strong>{searchQuery}</strong>
@@ -233,12 +238,14 @@ const Home = ({ setActive, user, active }) => {
               </button>
             )}
           </div>
-          <div className="col-md-3">
+          <div className="col-md-3 " >
+            <div className="">
             <Search search={search} handleChange={handleChange} />
             <div className="blog-heading text-start py-2 mb-4">Tags</div>
             <Tags tags={tags} />
             <FeatureBlogs title={"Most Popular"} blogs={blogs} />
             <Category catgBlogsCount={categoryCount} />
+            </div>
           </div>
         </div>
       </div>

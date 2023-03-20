@@ -5,7 +5,15 @@ import {
 } from "firebase/auth";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import {
+  addDoc,
+  collection,
+  getDoc,
+  serverTimestamp,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const initialState = {
@@ -52,6 +60,11 @@ const Auth = ({ setActive, setUser }) => {
           email,
           password
         );
+        
+        await addDoc(collection(db, "users"), {
+          id: user.uid,
+          Role: "FreeUser"
+        });
         await updateProfile(user, { displayName: `${firstName} ${lastName}` });
         setActive("home");
       } else {
@@ -64,9 +77,10 @@ const Auth = ({ setActive, setUser }) => {
   return (
     <div className="container-fluid mb-4">
       <div className="container">
-        <div className="col-12 text-center">
-          <div className="text-center heading py-2">
-            {!signUp ? "Sign-In" : "Sign-Up"}
+        <div className="col-12 ">
+          <br/>
+          <div >
+            <h1>{!signUp ? "Sign-In" : "Sign-Up"}</h1>
           </div>
         </div>
         <div className="row h-100 justify-content-center align-items-center">
@@ -74,6 +88,7 @@ const Auth = ({ setActive, setUser }) => {
             <form className="row" onSubmit={handleAuth}>
               {signUp && (
                 <>
+                <div></div>
                   <div className="col-6 py-3">
                     <input
                       type="text"

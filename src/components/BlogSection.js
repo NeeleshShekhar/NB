@@ -7,6 +7,7 @@ const BlogSection = ({
   id,
   title,
   description,
+  blogcontent,
   category,
   imgUrl,
   userId,
@@ -17,7 +18,7 @@ const BlogSection = ({
 }) => {
   return (
     <div>
-      <div className="row pb-4" key={id}>
+      <div className="row pb-4 blogsectioncards" key={id}>
         <div className="col-md-5">
           <div className="hover-blogs-img">
             <div className="blogs-img">
@@ -35,8 +36,8 @@ const BlogSection = ({
               {timestamp.toDate().toDateString()}
             </span>
           </div>
-          <div className="short-description text-start">
-            {excerpt(description, 120)}
+          <div className="short-description text-start " dangerouslySetInnerHTML={{__html : excerpt(blogcontent, 120)}}>
+            {/* {excerpt(blogcontent, 120)} */}
           </div>
           <Link to={`/detail/${id}`}>
             <button className="btn btn-read">Read More</button>
@@ -60,6 +61,7 @@ const BlogSection = ({
           )}
         </div>
       </div>
+      <br/>
     </div>
   );
 };
