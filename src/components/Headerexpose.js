@@ -3,7 +3,10 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import logo from "../Images/logo.png";
-const Headerexpose = () => {
+import { Link } from "react-router-dom";
+const Headerexpose = ({user,handleLogout}) => {
+  const userId = user?.uid;
+  
   return (
     <div >
        <Navbar bg="light" expand="lg">
@@ -13,6 +16,7 @@ const Headerexpose = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="/blogs" className="active">All Blogs</Nav.Link>
+            
             <Nav.Link href="https://www.neeleshshekhar.com" target="_blank" className="active">About Neelesh</Nav.Link>
             {/* <Nav.Link href="#link">Link</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
@@ -26,6 +30,36 @@ const Headerexpose = () => {
                 Separated link
               </NavDropdown.Item>
             </NavDropdown>*/}
+            {userId ? (
+                    <>
+                      <div className="profile-logo">
+                        <img
+                          src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                          alt="logo"
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                            marginTop: "12px",
+                          }}
+                        />
+                      </div>
+                      <p style={{ marginTop: "12px", marginLeft: "5px" }}>
+                        {user?.displayName}
+                      </p>
+                      <li className="nav-item nav-link" onClick={handleLogout}>
+                        Logout
+                      </li>
+                    </>
+                  ) : (
+                    <Nav.Link className="justify-content-end active" >  <Link to="/auth" style={{ textDecoration: "none" }}>
+                      <li
+                        style={{color:"white"}}                
+                      >
+                        Login
+                      </li>
+                    </Link></Nav.Link>
+                  )}
           </Nav> 
         </Navbar.Collapse>
       </Container>

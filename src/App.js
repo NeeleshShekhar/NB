@@ -47,7 +47,7 @@ function App() {
 
   return (
     <div className="App">
-      <Headerexpose />
+      <Headerexpose user={user}  handleLogout={handleLogout}/>
       <ScrollToTop />
       
       <ToastContainer position="top-center" />
