@@ -13,6 +13,21 @@
   }
 }
 
+.login-style{
+ 
+
+background: rgba(255, 255, 255, 0.71);
+backdrop-filter: blur(5px);
+/* Note: backdrop-filter has minimal browser support */
+
+border-radius: 33px;
+margin-top: 10px;
+}
+
+.signback{
+  background-image: url(./Images/ill.jpg);
+
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
+
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { auth, db } from "../firebase";
@@ -15,7 +16,9 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-
+import { getAuth, getRedirectResult, GoogleAuthProvider } from "firebase/auth";
+import Button from 'react-bootstrap/Button';
+import back from "../Images/ill.jpg";
 const initialState = {
   firstName: "",
   lastName: "",
@@ -44,7 +47,14 @@ const Auth = ({ setActive, setUser }) => {
           auth,
           email,
           password
-        );
+        ).then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
+          // ...
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
         setUser(user);
         setActive("home");
       } else {
@@ -59,7 +69,10 @@ const Auth = ({ setActive, setUser }) => {
           auth,
           email,
           password
-        );
+        ).catch((error) => {
+          toast.error(error.message);
+       
+    });
         
         await addDoc(collection(db, "users"), {
           id: user.uid,
@@ -74,9 +87,10 @@ const Auth = ({ setActive, setUser }) => {
     navigate("/");
   };
 
+ 
   return (
-    <div className="container-fluid mb-4">
-      <div className="container">
+    <div className="container-fluid mb-4 signback" >
+      <div className="container login-style">
         <div className="col-12 ">
           <br/>
           <div >
@@ -188,6 +202,9 @@ const Auth = ({ setActive, setUser }) => {
                   </div>
                 </>
               )}
+              <br/>
+              {/* <Button className="button-google" onClick = {handlegoogle} ><img width="20px" style={{paddingRight:'5px',color:'#020d30'}} alt="Google sign-in" src={google} /> Sign Up with Google</Button>
+     */}
             </div>
           </div>
         </div>

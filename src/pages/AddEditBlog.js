@@ -273,6 +273,7 @@ const AddEditBlog = ({ user, setActive }) => {
                   ))}
                 </select>
               </div>
+              
               <div className="col-12 py-3">
                 {/* <textarea
                   className="form-control description-box"
@@ -285,16 +286,18 @@ const AddEditBlog = ({ user, setActive }) => {
               
                 <br/>
 <br/>
+
               </div>
-             
               <div className="mb-3">
               <br/>
 <br/><input
                   type="file"
                   className="form-control"
                   onChange={(e) => setFile(e.target.files[0])}
+                  style={{marginTop:"100px"}}
                 />
               </div>
+              
               <div className="col-12 py-3 text-center">
                 <button
                   className="btn btn-add"
